@@ -18,7 +18,7 @@ typedef struct {
 
 #define enum_caps_ctor(x) { .cap = x, .str = #x }
 #define enum_delsys_ctor(x) { .delsys = x, .str = #x }
-#define verify_mask(x, y) (x & y) == y
+#define verify_flag(x, y) (y != 0 && x & y) || (y == 0 && x == y)
 
 // https://elixir.bootlin.com/linux/v5.10.112/source/include/uapi/linux/dvb/frontend.h#L33
 static enum_caps caps[] = {
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
 
   printf("Supported capabilities:\n");
   for (int i = 0, s = sizeof(caps)/sizeof(enum_caps); i < s; ++i) {
-    printf("%s: %d\n", caps[i].str, verify_mask(frontend_info.caps, caps[i].cap));
+    printf("%s: %d\n", caps[i].str, verify_flag(frontend_info.caps, caps[i].cap));
   }
   printf("\n");
 
